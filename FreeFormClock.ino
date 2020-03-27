@@ -11,7 +11,7 @@ int dataPin = 8;
 int downMinPin = 14;
 int upMinPin = 15;
 
-RTC_DS1307 rtc;
+RTC_DS3231 rtc;
 
 int debounce = 0;
 int dim = 0;
@@ -39,6 +39,8 @@ void setup() {
   rtc.adjust(DateTime(F(__DATE__),F(__TIME__)));
 #endif
 
+  pinMode(LED_BUILTIN, OUTPUT);
+
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
@@ -50,6 +52,7 @@ void setup() {
   pinMode(upMinPin, INPUT);
   digitalWrite(downMinPin, HIGH); // pullup
   digitalWrite(upMinPin, HIGH); // pullup
+
 }
 
 void changeTime(int changeDirection ) {
@@ -79,9 +82,14 @@ void changeTime(int changeDirection ) {
   }
 
   rtc.adjust(DateTime(yr, month, day, hr, min, 0));
+
 }
 
 void loop() {
+
+  digitalWrite(LED_BUILTIN, HIGH);
+  DateTime now = rtc.now();
+  digitalWrite(LED_BUILTIN, LOW);
 
   // Check buttons
   if( digitalRead(upMinPin) == LOW || digitalRead(downMinPin) == LOW ) {
@@ -107,11 +115,10 @@ void loop() {
 
   
   // Get the time
-  DateTime now = rtc.now();
   int h = now.hour();
   int m = now.minute();
   int s = now.second();
-
+    
 #ifdef DEBUG
   Serial.println();
   Serial.print(now.hour(), DEC);
@@ -234,3 +241,4 @@ void shiftIn(byte d) {
   digitalWrite(clockPin, LOW);
   digitalWrite(dataPin, LOW);
 }
+
