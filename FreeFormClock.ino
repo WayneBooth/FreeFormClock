@@ -30,6 +30,25 @@ int charCodes[10][6] = {
 };
 
 void setup() {
+
+  pinMode(latchPin, OUTPUT);
+  digitalWrite(latchPin, HIGH);
+    
+  pinMode(clockPin, OUTPUT);
+  digitalWrite(clockPin, LOW);
+
+  pinMode(dataPin, OUTPUT);
+  digitalWrite(dataPin, LOW);
+
+  pinMode(downMinPin, INPUT);
+  pinMode(upMinPin, INPUT);
+  digitalWrite(downMinPin, HIGH); // pullup
+  digitalWrite(upMinPin, HIGH); // pullup
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  delay(100);
+    
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
@@ -38,20 +57,6 @@ void setup() {
 #ifdef DEBUG
   rtc.adjust(DateTime(F(__DATE__),F(__TIME__)));
 #endif
-
-  pinMode(LED_BUILTIN, OUTPUT);
-
-  pinMode(latchPin, OUTPUT);
-  pinMode(clockPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);
-  digitalWrite(latchPin, HIGH);
-  digitalWrite(clockPin, LOW);
-  digitalWrite(dataPin, LOW);
-
-  pinMode(downMinPin, INPUT);
-  pinMode(upMinPin, INPUT);
-  digitalWrite(downMinPin, HIGH); // pullup
-  digitalWrite(upMinPin, HIGH); // pullup
 
 }
 
@@ -241,4 +246,3 @@ void shiftIn(byte d) {
   digitalWrite(clockPin, LOW);
   digitalWrite(dataPin, LOW);
 }
-
